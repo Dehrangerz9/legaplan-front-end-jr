@@ -20,12 +20,17 @@ export default function ToDoList() {
         if (typeof window !== "undefined") {
             const storedTasks = JSON.parse(localStorage.getItem('tasks'));
             const storedCompletedTasks = JSON.parse(localStorage.getItem('completedTasks'));
-
+            
+            
             if (storedTasks) {
                 setTasks(storedTasks);
+            } else {
+                setTasks(['Lavar as mãos', 'Fazer um Bolo', 'Lavar a louça'])
             }
             if (storedCompletedTasks) {
                 setCompletedTasks(storedCompletedTasks);
+            } else {
+                setCompletedTasks(['Levar o lixo para fora'])
             }
         }
     }, []);
