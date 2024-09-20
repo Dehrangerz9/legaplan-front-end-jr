@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useTransition } from 'react';
 import Image from "next/image"
 import './toDoList.scss';
 import trashIcon from "../assets/trash-icon.png"
 
 export default function ToDoList() {
-    const [tasks, setTasks] = useState([]);
-    const [completedTasks, setCompletedTasks] = useState([]);
+    const [tasks, setTasks] = useState(['Lavar as mãos','Fazer um Bolo','Lavar a louça']);
+    const [completedTasks, setCompletedTasks] = useState(['Levar o lixo para fora']);
     const [isCreateTaskPopup, setCreateTaskPopup] = useState(false);
     const [isDeleteTaskPopup, setDeleteTaskPopup] = useState(false);
     const [taskToDelete, setTaskToDelete] = useState(null);
@@ -15,8 +15,8 @@ export default function ToDoList() {
     const [newTask, setNewTask] = useState("");
 
     useEffect(() => {
-        const storedTasks = JSON.parse(localStorage.getItem('tasks')) || ['Babidi', 'Ir ao HTML'];
-        const storedCompletedTasks = JSON.parse(localStorage.getItem('completedTasks')) || ['Fazer o site em next.js', 'Acordar'];
+        const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        const storedCompletedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
         setTasks(storedTasks);
         setCompletedTasks(storedCompletedTasks);
     }, []);
@@ -66,6 +66,11 @@ export default function ToDoList() {
         setTasks(updatedTasks);
     }
 
+    function closePopup() {
+        setCreateTaskPopup(false);
+        setDeleteTaskPopup(false);    
+    }
+
     return (
         <div className='toDoList'>
             <div className='tasks'>
@@ -75,7 +80,7 @@ export default function ToDoList() {
                         <li key={index}>
                             <input type="checkbox" className="complete-task" onChange={() => completeTask(index)} />
                             <p>{task}</p>
-                            <div onClick={() => { setDeleteTaskPopup(true); setTaskToDelete(index); setDeleteFromCompleted(false); }} className='delete-task'>
+                            <div onClick={() => { setDeleteTaskPopup(true); setTaskToDelete(index); setDeleteFromCompleted(false); }}>
                                 <Image src={trashIcon} alt="deletar tarefa" width={24} height={24} />
                             </div>
                         </li>
@@ -87,7 +92,7 @@ export default function ToDoList() {
                         <li key={index}>
                             <input type="checkbox" className="complete-task checked" onChange={() => uncompleteTask(index)} />
                             <p className='checked'>{task}</p>
-                            <div onClick={() => { setDeleteTaskPopup(true); setTaskToDelete(index); setDeleteFromCompleted(true); }} className='delete-task'>
+                            <div onClick={() => { setDeleteTaskPopup(true); setTaskToDelete(index); setDeleteFromCompleted(true); }}>
                                 <Image src={trashIcon} alt="deletar tarefa" width={24} height={24} />
                             </div>
                         </li>
@@ -95,8 +100,9 @@ export default function ToDoList() {
                 </ul>
             </div>
             <button className='button confirm' onClick={() => { setCreateTaskPopup(true) }}>Adicionar Tarefa</button>
+
             {isCreateTaskPopup ? (
-                <div className="popup">
+                <div className={'popup'}>
                     <div className="popup-inner">
                         <p className='popup-title'>Nova Tarefa</p>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -111,19 +117,20 @@ export default function ToDoList() {
                         </div>
                         <div className='popup-buttons'>
                             <button className="button confirm" onClick={addTask}>Adicionar tarefa</button>
-                            <button className="button" onClick={() => setCreateTaskPopup(false)}>Cancelar</button>
+                            <button className="button" onClick={closePopup}>Cancelar</button>
                         </div>
                     </div>
                 </div>
             ) : null}
+
             {isDeleteTaskPopup ? (
-                <div className="popup">
+                <div className={'popup'}>
                     <div className="popup-inner">
                         <p className='popup-title'>Deletar tarefa</p>
                         <p className='popup-description'>Tem certeza que você deseja deletar essa tarefa?</p>
                         <div className='popup-buttons'>
                             <button className="button alert" onClick={confirmDeleteTask}>Deletar Tarefa</button>
-                            <button className="button" onClick={() => setDeleteTaskPopup(false)}>Cancelar</button>
+                            <button className="button" onClick={closePopup}>Cancelar</button>
                         </div>
                     </div>
                 </div>
