@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useTransition } from 'react';
+import { useState, useEffect } from 'react';
 import Image from "next/image"
 import './toDoList.scss';
 import trashIcon from "../assets/trash-icon.png"
@@ -8,20 +8,29 @@ import Popup from './popup';
 
 
 export default function ToDoList() {
-    const [tasks, setTasks] = useState(() => {
-        const storedTasks = JSON.parse(localStorage.getItem('tasks'));
-        return storedTasks || ['Lavar as mãos', 'Fazer um Bolo', 'Lavar a louça'];
-    });
-    const [completedTasks, setCompletedTasks] = useState(() => {
-        const storedCompletedTasks = JSON.parse(localStorage.getItem('completedTasks'));
-        return storedCompletedTasks || ['Levar o lixo para fora'];
-    });
+    const [tasks, setTasks] = useState([]);
+    const [completedTasks, setCompletedTasks] = useState([]);
     const [isCreateTaskPopup, setCreateTaskPopup] = useState(false);
     const [isDeleteTaskPopup, setDeleteTaskPopup] = useState(false);
     const [taskToDelete, setTaskToDelete] = useState(null);
     const [deleteFromCompleted, setDeleteFromCompleted] = useState(false);
     const [newTask, setNewTask] = useState("");
 
+    // Carrega as tarefas salvas no localStorage quando o componente monta
+    useEffect(() => {
+        const storedTasks = JSON.parse(localStorage.getItem('tasks'));
+        const storedCompletedTasks = JSON.parse(localStorage.getItem('completedTasks'));
+        setTasks(['Lavar as mãos', 'Fazer um Bolo', 'Lavar a louça'])
+        setCompletedTasks(['Levar o lixo para fora'])
+        if (storedTasks) {
+            setTasks(storedTasks);
+        }
+        if (storedCompletedTasks) {
+            setCompletedTasks(storedCompletedTasks);
+        }
+    }, []);
+
+    // Atualiza o localStorage sempre que as tasks ou completedTasks mudarem
     useEffect(() => {
         localStorage.setItem('tasks', JSON.stringify(tasks));
         localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
