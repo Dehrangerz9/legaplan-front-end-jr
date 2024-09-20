@@ -4,10 +4,18 @@ import { useState, useEffect, useTransition } from 'react';
 import Image from "next/image"
 import './toDoList.scss';
 import trashIcon from "../assets/trash-icon.png"
+import Popup from './popup';
+
 
 export default function ToDoList() {
-    const [tasks, setTasks] = useState(['Lavar as mãos','Fazer um Bolo','Lavar a louça']);
-    const [completedTasks, setCompletedTasks] = useState(['Levar o lixo para fora']);
+    const [tasks, setTasks] = useState(() => {
+        const storedTasks = JSON.parse(localStorage.getItem('tasks'));
+        return storedTasks || ['Lavar as mãos', 'Fazer um Bolo', 'Lavar a louça'];
+    });
+    const [completedTasks, setCompletedTasks] = useState(() => {
+        const storedCompletedTasks = JSON.parse(localStorage.getItem('completedTasks'));
+        return storedCompletedTasks || ['Levar o lixo para fora'];
+    });
     const [isCreateTaskPopup, setCreateTaskPopup] = useState(false);
     const [isDeleteTaskPopup, setDeleteTaskPopup] = useState(false);
     const [taskToDelete, setTaskToDelete] = useState(null);
@@ -15,24 +23,16 @@ export default function ToDoList() {
     const [newTask, setNewTask] = useState("");
 
     useEffect(() => {
-        const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        const storedCompletedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
-        setTasks(storedTasks);
-        setCompletedTasks(storedCompletedTasks);
-    }, []);
-
-    useEffect(() => {
         localStorage.setItem('tasks', JSON.stringify(tasks));
-    }, [tasks]);
-
-    useEffect(() => {
         localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
-    }, [completedTasks]);
+    }, [tasks, completedTasks]);
 
     function addTask() {
-        setTasks([...tasks, newTask]);
-        setNewTask("");
-        setCreateTaskPopup(false);
+        if (newTask.trim()) {
+            setTasks([...tasks, newTask.trim()]);
+            setNewTask("");
+            setCreateTaskPopup(false);
+        }
     }
 
     function confirmDeleteTask() {
@@ -66,11 +66,6 @@ export default function ToDoList() {
         setTasks(updatedTasks);
     }
 
-    function closePopup() {
-        setCreateTaskPopup(false);
-        setDeleteTaskPopup(false);    
-    }
-
     return (
         <div className='toDoList'>
             <div className='tasks'>
@@ -100,41 +95,40 @@ export default function ToDoList() {
                 </ul>
             </div>
             <button className='button confirm' onClick={() => { setCreateTaskPopup(true) }}>Adicionar Tarefa</button>
-
-            {isCreateTaskPopup ? (
-                <div className={'popup'}>
-                    <div className="popup-inner">
-                        <p className='popup-title'>Nova Tarefa</p>
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <label htmlFor="new-task"> Título</label>
-                            <input
-                                type="text"
-                                value={newTask}
-                                onChange={(e) => setNewTask(e.target.value)}
-                                placeholder="Digite"
-                                name='new-task'
-                            />
-                        </div>
-                        <div className='popup-buttons'>
-                            <button className="button confirm" onClick={addTask}>Adicionar tarefa</button>
-                            <button className="button" onClick={closePopup}>Cancelar</button>
-                        </div>
+            
+            {isCreateTaskPopup && (
+                <Popup
+                    title="Nova Tarefa"
+                    onClose={() => setCreateTaskPopup(false)}
+                    buttons={[
+                        { label: 'Adicionar tarefa', onClick: addTask, type: 'confirm' },
+                        { label: 'Cancelar', onClick: () => setCreateTaskPopup(false),  type:'popup-close'}
+                    ]}
+                >
+                    <div style={{display:'flex',flexDirection:"column"}}>
+                        <label htmlFor="new-task">Título</label>
+                        <input
+                            type="text"
+                            value={newTask}
+                            onChange={(e) => setNewTask(e.target.value)}
+                            placeholder="Digite"
+                            name="new-task"
+                        />
                     </div>
-                </div>
-            ) : null}
+                </Popup>)}
 
-            {isDeleteTaskPopup ? (
-                <div className={'popup'}>
-                    <div className="popup-inner">
-                        <p className='popup-title'>Deletar tarefa</p>
-                        <p className='popup-description'>Tem certeza que você deseja deletar essa tarefa?</p>
-                        <div className='popup-buttons'>
-                            <button className="button alert" onClick={confirmDeleteTask}>Deletar Tarefa</button>
-                            <button className="button" onClick={closePopup}>Cancelar</button>
-                        </div>
-                    </div>
-                </div>
-            ) : null}
+            {isDeleteTaskPopup && (
+                <Popup
+                    title="Deletar Tarefa"
+                    onClose={() => setDeleteTaskPopup(false)}
+                    buttons={[
+                        { label: 'Deletar', onClick: confirmDeleteTask, type: 'alert' },
+                        { label: 'Cancelar', onClick: () => setDeleteTaskPopup(false), type:'popup-close' }
+                    ]}
+                >
+                    <p>Tem certeza que você deseja deletar essa tarefa?</p>
+                </Popup>
+            )}
         </div>
     );
 }
