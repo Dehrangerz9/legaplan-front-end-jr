@@ -8,7 +8,17 @@ import trashIcon from "../assets/trash-icon.png"
 export default function ToDoList() {
     const [tasks,setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || ['Babidi','Ir ao HTML']);
     const [completedTasks,setCompletedTask] = useState(JSON.parse(localStorage.getItem('completedTasks')) || ['Fazer o site em next.js','Acordar']);
+    const [isCreateTaskPopup,setCreateTaskPopup] = useState(false);
+    const [isDeleteTaskPopup,setDeleteTaskPopup] = useState(false);
+    const [taskToDelete,setTaskToDelete] = useState(null)
+    const [newTask,setNewTask] = useState("")
     
+    function addTask(){
+        setTasks([...tasks,newTask])
+        setNewTask("")
+        setCreateTaskPopup(false)
+    }
+
     function completeTask(index){
         const completedTask = tasks[index];
         const updatedTasks = tasks.filter((_, i) => i !== index); 
@@ -36,7 +46,7 @@ export default function ToDoList() {
 
     return(<div className='toDoList'>
         <div className='tasks'>
-            <p>Suas Tarefas Hoje</p>
+            <p>Suas Tarefas Hoje</p>      
             <ul>
                 {tasks.map((task,index)=>(
                     <li key={index}>
@@ -44,7 +54,7 @@ export default function ToDoList() {
                     </li>
                 ))}
             </ul>
-            <p>Tarefas finalizadas</p>
+            <p>Tarefas Finalizadas</p>
             <ul>
                 {completedTasks.map((task,index)=>(
                     <li key={index}>
@@ -53,6 +63,21 @@ export default function ToDoList() {
                 ))}
             </ul>
         </div>
-        <button className='button'>Adicionar Tarefa</button>
+        <button className='button' onClick={()=>{setCreateTaskPopup(true)}}>Adicionar Tarefa</button>
+        {isCreateTaskPopup ? (
+            <div className="popup">
+                <div className="popup-inner">
+                    <p className='popup-title'>Nova Tarefa</p>
+                    <input 
+                        type="text" 
+                        value={newTask} 
+                        onChange={(e) => setNewTask(e.target.value)} 
+                        placeholder="Digite" 
+                    />
+                    <button className="button" onClick={addTask}>Adicionar tarefa</button>
+                    <button className="button" onClick={() => {setCreateTaskPopup(false); setCreateTaskPopup(false)}}>X</button>
+                </div>
+            </div>
+        ) : null }
     </div>);
 }
