@@ -90,7 +90,7 @@ export default function ToDoList() {
                         <li key={index}>
                             <input type="checkbox" className="complete-task" onChange={() => completeTask(index)} />
                             <p>{task}</p>
-                            <div onClick={() => { setDeleteTaskPopup(true); setTaskToDelete(index); setDeleteFromCompleted(false); }}>
+                            <div onClick={() => { setDeleteTaskPopup(true); setTaskToDelete(index); setDeleteFromCompleted(false);}} className='delete-task'>
                                 <Image src={trashIcon} alt="deletar tarefa" width={24} height={24} />
                             </div>
                         </li>
@@ -102,7 +102,7 @@ export default function ToDoList() {
                         <li key={index}>
                             <input type="checkbox" className="complete-task checked" onChange={() => uncompleteTask(index)} />
                             <p className='checked'>{task}</p>
-                            <div onClick={() => { setDeleteTaskPopup(true); setTaskToDelete(index); setDeleteFromCompleted(true); }}>
+                            <div onClick={() => { setDeleteTaskPopup(true); setTaskToDelete(index); setDeleteFromCompleted(true); }} className='delete-task'>
                                 <Image src={trashIcon} alt="deletar tarefa" width={24} height={24} />
                             </div>
                         </li>
