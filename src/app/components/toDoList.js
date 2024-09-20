@@ -124,7 +124,7 @@ export default function ToDoList() {
                         { label: 'Cancelar', onClick: () => setCreateTaskPopup(false),  type:'popup-close'}
                     ]}
                 >
-                    <div style={{display:'flex',flexDirection:"column"}}>
+                    <div style={{display:'flex',flexDirection:"column", gap:"8px"}}>
                         <label htmlFor="new-task">Título</label>
                         <input
                             type="text"
