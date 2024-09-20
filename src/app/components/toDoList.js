@@ -88,7 +88,7 @@ export default function ToDoList() {
                 <ul>
                     {tasks.map((task, index) => (
                         <li key={index}>
-                            <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
+                            <div style={{display:'flex',gap:'16px',alignItems:'center'}}>
                                 <input type="checkbox" className="complete-task" onChange={() => completeTask(index)} />
                                 <p>{task}</p>
                             </div>
@@ -102,7 +102,7 @@ export default function ToDoList() {
                 <ul>
                     {completedTasks.map((task, index) => (
                         <li key={index}>
-                            <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
+                            <div style={{display:'flex',gap:'16px',alignItems:'center'}}>
                                 <input type="checkbox" className="complete-task checked" onChange={() => uncompleteTask(index)} />
                                 <p className='checked'>{task}</p>
                             </div>
