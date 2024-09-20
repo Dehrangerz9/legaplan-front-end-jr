@@ -88,8 +88,10 @@ export default function ToDoList() {
                 <ul>
                     {tasks.map((task, index) => (
                         <li key={index}>
-                            <input type="checkbox" className="complete-task" onChange={() => completeTask(index)} />
-                            <p>{task}</p>
+                            <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
+                                <input type="checkbox" className="complete-task" onChange={() => completeTask(index)} />
+                                <p>{task}</p>
+                            </div>
                             <div onClick={() => { setDeleteTaskPopup(true); setTaskToDelete(index); setDeleteFromCompleted(false);}} className='delete-task'>
                                 <Image src={trashIcon} alt="deletar tarefa" width={24} height={24} />
                             </div>
@@ -100,8 +102,10 @@ export default function ToDoList() {
                 <ul>
                     {completedTasks.map((task, index) => (
                         <li key={index}>
-                            <input type="checkbox" className="complete-task checked" onChange={() => uncompleteTask(index)} />
-                            <p className='checked'>{task}</p>
+                            <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
+                                <input type="checkbox" className="complete-task checked" onChange={() => uncompleteTask(index)} />
+                                <p className='checked'>{task}</p>
+                            </div>
                             <div onClick={() => { setDeleteTaskPopup(true); setTaskToDelete(index); setDeleteFromCompleted(true); }} className='delete-task'>
                                 <Image src={trashIcon} alt="deletar tarefa" width={24} height={24} />
                             </div>
