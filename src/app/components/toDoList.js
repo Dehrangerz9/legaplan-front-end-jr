@@ -16,24 +16,25 @@ export default function ToDoList() {
     const [deleteFromCompleted, setDeleteFromCompleted] = useState(false);
     const [newTask, setNewTask] = useState("");
 
-    // Carrega as tarefas salvas no localStorage quando o componente monta
     useEffect(() => {
-        const storedTasks = JSON.parse(localStorage.getItem('tasks'));
-        const storedCompletedTasks = JSON.parse(localStorage.getItem('completedTasks'));
-        setTasks(['Lavar as mãos', 'Fazer um Bolo', 'Lavar a louça'])
-        setCompletedTasks(['Levar o lixo para fora'])
-        if (storedTasks) {
-            setTasks(storedTasks);
-        }
-        if (storedCompletedTasks) {
-            setCompletedTasks(storedCompletedTasks);
+        if (typeof window !== "undefined") {
+            const storedTasks = JSON.parse(localStorage.getItem('tasks'));
+            const storedCompletedTasks = JSON.parse(localStorage.getItem('completedTasks'));
+
+            if (storedTasks) {
+                setTasks(storedTasks);
+            }
+            if (storedCompletedTasks) {
+                setCompletedTasks(storedCompletedTasks);
+            }
         }
     }, []);
 
-    // Atualiza o localStorage sempre que as tasks ou completedTasks mudarem
     useEffect(() => {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-        localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+        if (typeof window !== "undefined") {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+        }
     }, [tasks, completedTasks]);
 
     function addTask() {
