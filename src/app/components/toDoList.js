@@ -116,7 +116,7 @@ export default function ToDoList() {
                 <p>Tarefas Finalizadas</p>
                 <ul>
                 {completedTasks.length === 0 ? (
-                    <li className='no-task'>Sem tarefas completadas</li>
+                    <li className='no-task'>Sem tarefas completas</li>
                 ) : (
                     completedTasks.map((task, index) => (
                     <li key={index}>
