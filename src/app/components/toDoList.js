@@ -84,34 +84,65 @@ export default function ToDoList() {
     return (
         <div className='toDoList'>
             <div className='tasks'>
-                <p>Suas Tarefas Hoje</p>
+                <p>Suas Tarefas de Hoje</p>
                 <ul>
-                    {tasks.map((task, index) => (
-                        <li key={index}>
-                            <div style={{display:'flex',gap:'16px',alignItems:'center'}}>
-                                <input type="checkbox" className="complete-task" onChange={() => completeTask(index)} />
-                                <p>{task}</p>
-                            </div>
-                            <div onClick={() => { setDeleteTaskPopup(true); setTaskToDelete(index); setDeleteFromCompleted(false);}} className='delete-task'>
-                                <Image src={trashIcon} alt="deletar tarefa" width={24} height={24} />
-                            </div>
-                        </li>
-                    ))}
+                {tasks.length === 0 ? (
+                    <li className='complete-task'>Sem tarefas</li>
+                ) : (
+                    tasks.map((task, index) => (
+                    <li key={index}>
+                        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                        <input
+                            type="checkbox"
+                            className="complete-task"
+                            onChange={() => completeTask(index)}
+                        />
+                        <p>{task}</p>
+                        </div>
+                        <div
+                        onClick={() => {
+                            setDeleteTaskPopup(true);
+                            setTaskToDelete(index);
+                            setDeleteFromCompleted(false);
+                        }}
+                        className="delete-task"
+                        >
+                        <Image src={trashIcon} alt="deletar tarefa" width={24} height={24} />
+                        </div>
+                    </li>
+                    ))
+                )}
                 </ul>
                 <p>Tarefas Finalizadas</p>
                 <ul>
-                    {completedTasks.map((task, index) => (
-                        <li key={index}>
-                            <div style={{display:'flex',gap:'16px',alignItems:'center'}}>
-                                <input type="checkbox" className="complete-task checked" onChange={() => uncompleteTask(index)} />
-                                <p className='checked'>{task}</p>
-                            </div>
-                            <div onClick={() => { setDeleteTaskPopup(true); setTaskToDelete(index); setDeleteFromCompleted(true); }} className='delete-task'>
-                                <Image src={trashIcon} alt="deletar tarefa" width={24} height={24} />
-                            </div>
-                        </li>
-                    ))}
+                {completedTasks.length === 0 ? (
+                    <li>Sem tarefas completadas</li>
+                ) : (
+                    completedTasks.map((task, index) => (
+                    <li key={index}>
+                        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                        <input
+                            type="checkbox"
+                            className="complete-task checked"
+                            onChange={() => uncompleteTask(index)}
+                        />
+                        <p className="checked">{task}</p>
+                        </div>
+                        <div
+                        onClick={() => {
+                            setDeleteTaskPopup(true);
+                            setTaskToDelete(index);
+                            setDeleteFromCompleted(true);
+                        }}
+                        className="delete-task"
+                        >
+                        <Image src={trashIcon} alt="deletar tarefa" width={24} height={24} />
+                        </div>
+                    </li>
+                    ))
+                )}
                 </ul>
+
             </div>
             <button className='button confirm' onClick={() => { setCreateTaskPopup(true) }}>Adicionar Tarefa</button>
             
