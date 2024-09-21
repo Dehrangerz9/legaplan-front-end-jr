@@ -42,6 +42,11 @@
                 animation: zoomIn 0.3s ease-out; 
                 transform: scale(1);
 
+                &.no-task{
+                    color: #0796D3;
+                    border-color: #0796D3;
+                }
+
                 &:hover {
                     background-color: #F7F9FD;
                 }

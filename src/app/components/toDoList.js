@@ -87,7 +87,7 @@ export default function ToDoList() {
                 <p>Suas Tarefas de Hoje</p>
                 <ul>
                 {tasks.length === 0 ? (
-                    <li className='complete-task'>Sem tarefas</li>
+                    <li className='no-task'>Sem tarefas para completar</li>
                 ) : (
                     tasks.map((task, index) => (
                     <li key={index}>
@@ -116,7 +116,7 @@ export default function ToDoList() {
                 <p>Tarefas Finalizadas</p>
                 <ul>
                 {completedTasks.length === 0 ? (
-                    <li>Sem tarefas completadas</li>
+                    <li className='no-task'>Sem tarefas completadas</li>
                 ) : (
                     completedTasks.map((task, index) => (
                     <li key={index}>
