@@ -10,11 +10,13 @@ export default function Header() {
     month: "long",
     year: "numeric",
   });
+  const formattedDate = currentDate.replace(/^\w/, (c) => c.toUpperCase());
+
   return (
     <header className="header">
        <Image src={logo} alt="logomarca focal" width={150} height={36} />
        <p className="greeting">Bem-vindo de volta, Marcus</p>
-       <p className="date">{currentDate}</p>
+       <p className="date">{formattedDate}</p>
     </header>
   );
 };
